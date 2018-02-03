@@ -23,4 +23,10 @@ Route::prefix('/')->group(function () {
 
 	//Tela onde fica todos os graficos do PIB
 	Route::get('grafico','Pib@pibGrafico')->name('grafico');
+
+	//Pegando os dados do grafico
+	Route::get('graficoPost','Pib@grafico')->name('dadosGrafico');
+
+	//Pegando os dados do grafico
+	Route::get('graficoPostPer','Pib@graficoPer')->name('dadosGraficoPer');
 });

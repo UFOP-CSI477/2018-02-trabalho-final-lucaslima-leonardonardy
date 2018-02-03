@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model as Model;
+use Symfony\Component\HttpFoundation\Response;
 
 class Pib extends Controller
 {
@@ -21,6 +22,16 @@ class Pib extends Controller
 
     public function pibGrafico()
     {
-    	var_dump("Não implementado"); die();
+    	return view('graficos');
+    }
+
+    public function grafico(Response $response)
+    {
+    	echo Model\Pib::sltPib();
+    }
+
+    public function graficoPer(Response $response)
+    {
+        echo Model\Pib::sltPibPerCapita();
     }
 }
