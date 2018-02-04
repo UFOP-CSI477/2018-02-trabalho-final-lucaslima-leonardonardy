@@ -1,190 +1,86 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PIB</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PIB</title>
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('datatables/datatables.min.css') }}"/>    
+    </head>
     <header>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" title="PIB" href="{{ route('home') }}">Calculo do PIB</a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">
+                        Toggle navigation
+                    </span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        Controle e Calculo do PIB
+                    </a>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ route('home') }}" title="Calcular PIB">Calcular PIB</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('grafico') }}" title="Graficos e Comparações">Graficos e Comparações</a>
-                    </li>
-                </ul>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="{{ $activeHome or "" }}"><a href="{{ route('home') }}">Cadastrar PIB</a></li>
+                        <li class="{{ $activeAlterarPib or "" }}"><a href="{{ route('alterarPib') }}">Alterar PIB</a></li>
+                        <li class="{{ $activePais or "" }}"><a href="{{ route('gerenciarPais') }}">Cadastrar Pais</a></li>
+                        <li class="{{ $activeGraficos or "" }}"><a href="{{ route('grafico') }}">Graficos Comparativos</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
-    <main>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                @yield('conteudo')
+    <body>
+        <main>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        @if(session()->has('success'))
+                        <div class="alert alert-success text-center">
+                            {{ session()->get('success') }}
+                        </div>
+                        @elseif(session()->has('error'))
+                        <div class="alert alert-danger text-center">
+                            {{ session()->get('error') }}
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        @yield('conteudo')
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
-<script src="{{ asset('js/jquery.min.js') }}" type="text/javascript" charset="utf-8"></script>
-<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}" type="text/javascript" charset="utf-8"></script>
-<script src="{{ asset('js/Chart.min.js') }}" type="text/javascript" charset="utf-8"></script>
-<script>
-// var ctx = document.getElementById("myChart2").getContext('2d');
-// var myChart2 = new Chart(ctx, {
-//     type: 'polarArea',
-//     data: {
-//         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-//         datasets: [{
-//             label: 'PIB Per Capita',
-//             data: [12, 19, 3, 5, 2, 3],
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255,99,132,1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(255, 159, 64, 1)'
-//             ],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         scales: {
-//             yAxes: [{
-//                 ticks: {
-//                     beginAtZero:true
-//                 }
-//             }]
-//         }
-//     }
-// });
-</script>
-<script>
-$.ajax({
-    type: 'GET',
-    url: "{{ route('dadosGrafico') }}",
-    success: function (data) {
-        data = JSON.parse(data);
-        var rotulos = [];
-        var dados = [];
-
-        for (var i = 0; i < data.length; i++) {
-            rotulos.push(data[i].totalPib);
-            dados.push(data[i].pais);
-        }
-        var ctx = document.getElementById("myChart1").getContext('2d');
-        var myChart2 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: dados,
-                datasets: [{
-                    label: 'PIB',
-                    data: rotulos,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)'
-                    ],
-                    borderWidth: 1
-                }]
-            }
-        });
-    }
-});
-
-$.ajax({
-    type: 'GET',
-    url: "{{ route('dadosGraficoPer') }}",
-    success: function (data) {
-        data = JSON.parse(data);
-        var rotulos2 = [];
-        var dados2 = [];
-
-        for (var i = 0; i < data.length; i++) {
-            rotulos2.push(data[i].totalPib);
-            dados2.push(data[i].pais);
-        }
-        console.log(rotulos2);
-        var ctx = document.getElementById("myChart2").getContext('2d');
-        var myChart2 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: dados2,
-                datasets: [{
-                    label: 'PIB',
-                    data: rotulos2,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(255,99,132,1)'
-                    ],
-                    borderWidth: 1
-                }]
-            }
-        });
-    }
-});
-</script>
-</body>
+        </main>
+        <br>
+        <br>
+        <br>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/Chart.min.js') }}"></script>
+        <script src="{{ asset('datatables/datatables.min.js') }}"></script>
+        <script src="{{ asset('js/config-datatables.js') }}"></script>
+        <script src="{{ asset('js/ajax-modal-pib.js') }}"></script>       
+        <script src="{{ asset('js/graficos.js') }}"></script>       
+    </body>
 </html>

@@ -14,4 +14,13 @@ class Pais extends Model
     		'pais'
     	)->get()->toArray();
     }
+
+    public static function sltPaisesCompleto()
+    {
+    	return DB::table('pais')->select(
+    		'id',
+    		'populacao',
+    		'pais'
+    	)->get()->toArray();
+    }
 }

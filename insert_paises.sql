@@ -1,0 +1,10 @@
+INSERT INTO pais (populacao,pais) VALUES (11372470000, 'China');
+INSERT INTO pais (populacao,pais) VALUES (1278160000, 'Índia');
+INSERT INTO pais (populacao,pais) VALUES (321968000, 'USA');
+INSERT INTO pais (populacao,pais) VALUES (255780000, 'Indonésia');
+INSERT INTO pais (populacao,pais) VALUES (209156000, 'Paquistão');
+INSERT INTO pais (populacao,pais) VALUES (207660929, 'Brasil');
+INSERT INTO pais (populacao,pais) VALUES (8279700, 'Suíça');
+INSERT INTO pais (populacao,pais) VALUES (60725000	, 'Itália');
+INSERT INTO pais (populacao,pais) VALUES (839, 'Vaticano');
+INSERT INTO pais (populacao,pais) VALUES (562958, 'Luxemburgo');
