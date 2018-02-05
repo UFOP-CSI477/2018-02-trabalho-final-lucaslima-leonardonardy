@@ -10,6 +10,7 @@ function ajaxPibModal(id) {
             $("#exportacoes").val(dataPib[0].exportacoes);
             $("#importacoes").val(dataPib[0].importacoes);
             $("#ano").val(dataPib[0].ano);
+            $("#idPais").val(dataPib[0].idPais);
             $("#id").val(dataPib[0].id);
         }
     });

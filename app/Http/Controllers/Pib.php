@@ -50,14 +50,23 @@ class Pib extends Controller
             ->withErrors($validator);
         }
 
-        $id = $dados['id'];
-        unset($dados['id']);
+        $verify = DB::table('pib')
+            ->where('ano', '=', $dados['ano'])
+            ->where('idPais', '=', $dados['idPais'])
+            ->where('id', '!=', $dados['id'])
+            ->get()->toArray();
+        
+        if (empty($verify)) {
+            $id = $dados['id'];
+            unset($dados['id']);
+            unset($dados['idPais']);
 
-        $result = DB::table('pib')
-            ->where('id', $id)
-            ->update($dados);
+            $result = DB::table('pib')
+                ->where('id', $id)
+                ->update($dados);    
+        }        
 
-        if ($result == true) {
+        if (isset($result) && $result == true) {
             return redirect()
                 ->route('alterarPib')
                 ->with(
@@ -129,9 +138,18 @@ class Pib extends Controller
             ->withErrors($validator);
         }
 
-        $result = Model\Pib::insPib($dados);
+        $verify = DB::table('pib')
+            ->where([
+                'idPais' => $dados['idPais'],
+                'ano' => $dados['ano']
+            ])->get()->toArray();
 
-        if ($result === true) {
+
+        if (empty($verify)) {
+            $result = Model\Pib::insPib($dados);    
+        }
+
+        if (isset($result) && $result === true) {
             return redirect()
                 ->route('home')
                 ->with(
@@ -150,19 +168,21 @@ class Pib extends Controller
 
     public function pibGrafico()
     {
+        $dados['anoPib'] = Model\Pib::sltAnoPib();
+        $dados['paisPib'] = Model\Pais::sltPaisesPib();
         $dados['activeGraficos'] = "active";
 
     	return view('graficos', $dados);
     }
 
-    public function grafico(Response $response)
+    public function grafico($ano)
     {
-    	echo Model\Pib::sltPib();
+    	echo Model\Pib::sltPib($ano);
     }
 
-    public function graficoPer(Response $response)
+    public function graficoPer($ano)
     {
-        echo Model\Pib::sltPibPerCapita();
+        echo Model\Pib::sltPibPerCapita($ano);
     }
 
     public function selectPibPorIdModel($id)

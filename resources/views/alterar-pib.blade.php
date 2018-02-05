@@ -91,6 +91,7 @@
 	        			</div>
 	        			{{ csrf_field() }}
 	        			<input type="hidden" name="id" id="id">
+	        			<input type="hidden" name="idPais" id="idPais">
 	        			<button type="button" class="btn btn-default" data-dismiss="modal">Ferchar</button>
 	        			<button type="submit" class="btn btn-primary">Alterar</button>
 	        		</form>

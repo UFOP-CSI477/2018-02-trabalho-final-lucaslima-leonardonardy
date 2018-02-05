@@ -1,10 +1,43 @@
-$(document).ready(function() {
-	if (document.URL.indexOf('grafico') == 15) {
-		
+function graficos() {
+	var ano = $("#anoPibSelect").val();
+	var pais = $("#paisPibSelect").val();
+	var pib = "";
+
+	if ($.isNumeric(ano)) {
+		if (pais !== "Selecione o pais") {
+			pib = pais
+		}else {
+			pib = ano;	
+		}	
+	}else if (pais !== "Selecione o pais") {
+		pib = pais
+	}
+	
+	if (document.URL.indexOf('grafico') == 15 && pib.length !== 0) {
+
+		var  urlAnoPaisPib = "http://pib.com/graficoPost/".concat(pib);
+		var urlAnoPaisPibPer = "http://pib.com/graficoPostPer/".concat(pib);
+
+		//limpando gradico 1
+		document.getElementById("myChartCont1").innerHTML = '&nbsp;';
+		document.getElementById("myChartCont1").innerHTML = '<canvas id="myChart1"></canvas>';
+
+		//limpando gradico 2
+		document.getElementById("myChartCont2").innerHTML = '&nbsp;';
+		document.getElementById("myChartCont2").innerHTML = '<canvas id="myChart2"></canvas>';
+
+		//limpando gradico 3
+		document.getElementById("myChartCont3").innerHTML = '&nbsp;';
+		document.getElementById("myChartCont3").innerHTML = '<canvas id="myChart3"></canvas>';
+
+		//limpando gradico 4
+		document.getElementById("myChartCont4").innerHTML = '&nbsp;';
+		document.getElementById("myChartCont4").innerHTML = '<canvas id="myChart4"></canvas>';
+
 		//Grafico 1
 		$.ajax({
 			type: 'GET',
-			url: 'http://pib.com/graficoPost',
+			url: urlAnoPaisPib,
 			
 			success: function (data) {
 				data = JSON.parse(data);
@@ -12,9 +45,10 @@ $(document).ready(function() {
 				var dados = [];
 				
 				for (var i = 0; i < data.length; i++) {
-					rotulos.push(data[i].totalPib);
+					rotulos.push(Math.round(data[i].totalPib));
 					dados.push(data[i].pais);
 				}
+
 				var ctx = document.getElementById("myChart1").getContext('2d');
 				var myChart1 = new Chart(ctx, {
 					type: 'bar',
@@ -35,7 +69,7 @@ $(document).ready(function() {
 		//Grafico 2
 		$.ajax({
 			type: 'GET',
-			url: 'http://pib.com/graficoPostPer',
+			url: urlAnoPaisPibPer,
 
 			success: function (data) {
 				data = JSON.parse(data);
@@ -67,7 +101,7 @@ $(document).ready(function() {
 		//Grafico 3
 		$.ajax({
 			type: 'GET',
-			url: 'http://pib.com/graficoPost',
+			url: urlAnoPaisPib,
 			
 			success: function (data) {
 				data = JSON.parse(data);
@@ -98,7 +132,7 @@ $(document).ready(function() {
 		//Grafico 4
 		$.ajax({
 			type: 'GET',
-			url: 'http://pib.com/graficoPostPer',
+			url: urlAnoPaisPibPer,
 
 			success: function (data) {
 				data = JSON.parse(data);
@@ -127,4 +161,4 @@ $(document).ready(function() {
 			}
 		});		
 	}
-});
+};

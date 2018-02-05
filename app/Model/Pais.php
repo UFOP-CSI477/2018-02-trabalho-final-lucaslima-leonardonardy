@@ -23,4 +23,11 @@ class Pais extends Model
     		'pais'
     	)->get()->toArray();
     }
+
+    public static function sltPaisesPib()
+    {
+        return DB::table('pais')->select(
+            'pais'
+        )->get()->toArray();        
+    }
 }

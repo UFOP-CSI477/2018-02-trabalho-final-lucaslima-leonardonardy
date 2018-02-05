@@ -46,8 +46,8 @@ Route::prefix('/')->group(function () {
 	Route::get('grafico','Pib@pibGrafico')->name('grafico');
 
 	//Pegando os dados do grafico
-	Route::get('graficoPost','Pib@grafico')->name('dadosGrafico');
+	Route::get('graficoPost/{anoPais?}','Pib@grafico')->name('dadosGrafico');
 
 	//Pegando os dados do grafico
-	Route::get('graficoPostPer','Pib@graficoPer')->name('dadosGraficoPer');
+	Route::get('graficoPostPer/{anoPais?}','Pib@graficoPer')->name('dadosGraficoPer');
 });
