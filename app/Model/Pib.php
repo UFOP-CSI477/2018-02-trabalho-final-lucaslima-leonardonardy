@@ -14,10 +14,10 @@ class Pib extends Model
         }elseif (is_string($anoPais)) {
             $where = 'pais';
         }         
-
+        // var_dump($anoPais, $where); die();
     	return DB::table('calculo_pib')->select(
     		'totalPib',
-    		DB::raw("CONCAT(pais, '-',ano) AS pais")
+    		DB::raw("CONCAT(pais, '-',pais) AS pais")
     	)
         ->where($where, '=', $anoPais)
         ->get()->toJson();

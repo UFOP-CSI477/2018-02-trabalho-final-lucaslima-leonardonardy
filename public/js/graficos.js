@@ -12,11 +12,11 @@ function graficos() {
 	}else if (pais !== "Selecione o pais") {
 		pib = pais
 	}
-	
-	if (document.URL.indexOf('grafico') == 15 && pib.length !== 0) {
 
-		var  urlAnoPaisPib = "http://pib.com/graficoPost/".concat(pib);
-		var urlAnoPaisPibPer = "http://pib.com/graficoPostPer/".concat(pib);
+	if (document.URL.indexOf('grafico') == 20 && pib.length !== 0) {
+
+		var  urlAnoPaisPib = window.location.origin + "/graficoPost/" + pib;
+		var urlAnoPaisPibPer = window.location.origin +  "/graficoPostPer/" + pib;
 
 		//limpando gradico 1
 		document.getElementById("myChartCont1").innerHTML = '&nbsp;';
