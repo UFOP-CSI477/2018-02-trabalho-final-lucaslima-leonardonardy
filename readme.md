@@ -54,4 +54,4 @@
   - Tela de registro de usuário
 
 ### 5. Referências
-Disciplina de Economia, Prof. Paganini - DEENP, 2017/2.
+Protótipo adaptado, Disciplina de Economia, Prof. Paganini - DEENP, 2017/2.
