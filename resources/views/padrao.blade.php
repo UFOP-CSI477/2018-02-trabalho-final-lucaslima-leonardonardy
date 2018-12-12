@@ -63,6 +63,11 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('usuarioAlterar') ."/". Auth::user()->id }}">
+                                            Alterar
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         @endguest

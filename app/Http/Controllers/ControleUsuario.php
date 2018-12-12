@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class ControleUsuario extends Controller
 {
@@ -95,4 +96,60 @@ class ControleUsuario extends Controller
 	    // retorna a senha embaralhada com "str_shuffle" com o tamanho definido pela variável $tamanho
 	    return substr(str_shuffle($senha),0,$tamanho);
 	}
+
+    /**
+     * Chama a view de alterar dados do usuario
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function usuarioAlterar($id)
+    {
+        $dados = [
+            "id" => Auth::user()->id,
+            "name" => Auth::user()->name,
+            "email" => Auth::user()->email,
+            "secret" => Auth::user()->secret
+        ];
+
+        return view("alterar-usuario", $dados);
+    }
+
+
+    /**
+     * Validad os dados e insere no banco
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function usuarioAlterarValidar(Request $request)
+    {
+        $dados = $request->except('_token');
+
+        $validator = Validator::make($dados, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'secret' => 'required|string|min:2',
+        ]);
+
+        if (is_null($dados['password'])) {
+            unset($dados['password']);
+            unset($dados['password_confirmation']);
+        }else {
+            $dados['password'] = bcrypt($dados['password']);
+            unset($dados['password_confirmation']);
+        }
+
+        $id = $dados['id'];
+        unset($dados['id']);
+        $resultUser = User::where('id', '=', $id)->update($dados);
+
+        if ($resultUser == 1) {
+            return redirect()
+                ->back()
+                ->with("status", "Usuário alterado com sucesso !!!");
+        }
+
+        return redirect()
+            ->back()
+            ->with("erro", "Usuário não alterado.");
+    }
 }

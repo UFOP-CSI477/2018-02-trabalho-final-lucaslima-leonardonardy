@@ -22,6 +22,12 @@ Route::prefix('/')->group(function () {
 
 	//Resetar senha de usuario
 	Route::post('/recuperar/senha', 'ControleUsuario@recuperarSenha')->name('recuperarSenha');
+	
+	//chama a view e busca os dados do usuario
+	Route::get('/usuario/alterar/{id?}', 'ControleUsuario@usuarioAlterar')->name('usuarioAlterar');
+	
+	//valida e altera os dados de usuario
+	Route::post('/usuario/alterar/validar', 'ControleUsuario@usuarioAlterarValidar')->name('usuarioAlterarValidar');
 
 	//Pagina inicial do sistema
 	Route::get('/pib/cadastrar','Pib@cadastrarPib')->name('cadastrarPib');
