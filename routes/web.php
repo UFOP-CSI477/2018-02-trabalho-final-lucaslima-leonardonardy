@@ -11,12 +11,20 @@
 |
 */
 
+//Autenticacao de rotas
+Auth::routes();
 
 //Chama a tela de login
 Route::prefix('/')->group(function () {
 
 	//Pagina inicial do sistema
-	Route::get('/','Pib@viewPrincipal')->name('home');
+	Route::get('/', 'HomeController@index')->name('home');
+
+	//Resetar senha de usuario
+	Route::post('/recuperar/senha', 'ControleUsuario@recuperarSenha')->name('recuperarSenha');
+
+	//Pagina inicial do sistema
+	Route::get('/pib/cadastrar','Pib@cadastrarPib')->name('cadastrarPib');
 
 	//Pagina para alterar o PIB
 	Route::get('pib/alterar','Pib@alterarPib')->name('alterarPib');

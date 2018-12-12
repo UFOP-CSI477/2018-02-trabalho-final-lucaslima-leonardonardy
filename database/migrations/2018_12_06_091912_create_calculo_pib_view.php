@@ -19,7 +19,7 @@ class CreateCalculoPibView extends Migration
                 p.consumo + p.investimento + p.gastosGoverno + (
                     p.exportacoes - p.importacoes
                 )
-            ) AS totalPib, pa.pais FROM pib AS p
+            ) AS totalPib, pa.pais, p.ano FROM pib AS p
             INNER JOIN pais AS pa ON p.idPais = pa.id
         ");
     }

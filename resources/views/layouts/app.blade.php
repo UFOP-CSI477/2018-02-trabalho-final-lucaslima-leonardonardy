@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>PIB</title>
-        <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon"/>
-        <link rel="stylesheet" href="{{ asset('css/all.css') }}">    
-    </head>
-    <header>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'PIB') }}</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon"/>
+</head>
+<body>
+    <div id="app">
         <nav class="navbar navbar-inverse">
             <div class="container">
                 <div class="navbar-header">
@@ -70,46 +77,9 @@
                 </div>
             </div>
         </nav>
-    </header>
-    <body>
-        <main>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6 col-lg-offset-3">
-                        @if(session()->has('success'))
-                        <div class="alert alert-success text-center">
-                            {{ session()->get('success') }}
-                        </div>
-                        @elseif(session()->has('error'))
-                        <div class="alert alert-danger text-center">
-                            {{ session()->get('error') }}
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-lg-offset-3">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        @yield('conteudo')
-                    </div>
-                </div>
-            </div>
-        </main>
-        <br>
-        <br>
-        <br>
-        <script src="{{ asset('js/all.js') }}"></script>
-    </body>
+        @yield('content')
+    </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/all.js') }}"></script>
+</body>
 </html>

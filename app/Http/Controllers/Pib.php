@@ -10,7 +10,17 @@ use Illuminate\Support\Facades\DB;
 
 class Pib extends Controller
 {
-    public function viewPrincipal()
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    public function cadastrarPib()
     {
     	$dados['pais'] = Model\Pais::sltPaises();
         $dados['activeHome'] = "active";
@@ -151,14 +161,14 @@ class Pib extends Controller
 
         if (isset($result) && $result === true) {
             return redirect()
-                ->route('home')
+                ->route('cadastrarPib')
                 ->with(
                     'success',
                     'Dados do PIB inseridos com sucesso!'
                 );   
         } else {
             return redirect()
-                ->route('home')
+                ->route('cadastrarPib')
                 ->with(
                     'error',
                     'Dados do PIB não foram inseridos!'
